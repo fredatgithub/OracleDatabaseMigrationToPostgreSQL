@@ -203,5 +203,23 @@ namespace DatabaseMigration.Forms
             return $"Host={txtPgHost.Text};Port={txtPgPort.Text};Database={txtPgDatabase.Text};" +
                    $"Username={txtPgUser.Text};Password={txtPgPassword.Text}";
         }
+
+    private void InitializeComponent()
+    {
+      this.SuspendLayout();
+      // 
+      // ConnectionTestForm
+      // 
+      this.ClientSize = new System.Drawing.Size(282, 253);
+      this.Name = "ConnectionTestForm";
+      this.Load += new System.EventHandler(this.ConnectionTestForm_Load);
+      this.ResumeLayout(false);
+
     }
+
+    private void ConnectionTestForm_Load(object sender, EventArgs e)
+    {
+
+    }
+  }
 } 

@@ -14,7 +14,7 @@ namespace DatabaseMigration
             InitializeComponent();
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private void BtnConnect_Click(object sender, EventArgs e)
         {
             try
             {
@@ -30,9 +30,9 @@ namespace DatabaseMigration
                     MessageBox.Show("Connexion à PostgreSQL réussie!");
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                MessageBox.Show($"Erreur de connexion: {ex.Message}");
+                MessageBox.Show($"Erreur de connexion: {exception.Message}");
             }
         }
 
