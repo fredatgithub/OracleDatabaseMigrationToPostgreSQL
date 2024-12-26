@@ -38,21 +38,26 @@ namespace DatabaseMigration
 
     private void InitializeComponent()
     {
-      Button btnTestConnections = new Button
-      {
-        Text = "Tester les connexions",
-        Location = new System.Drawing.Point(10, 10),
-        Size = new System.Drawing.Size(150, 30)
-      };
-      btnTestConnections.Click += BtnTestConnections_Click;
+      this.SuspendLayout();
+      // 
+      // MainForm
+      // 
+      this.ClientSize = new System.Drawing.Size(282, 253);
+      this.Name = "MainForm";
+      this.Load += new System.EventHandler(this.MainForm_Load);
+      this.ResumeLayout(false);
 
-      Controls.Add(btnTestConnections);
     }
 
     private void BtnTestConnections_Click(object sender, EventArgs e)
     {
       var testForm = new ConnectionTestForm();
       testForm.ShowDialog();
+    }
+
+    private void MainForm_Load(object sender, EventArgs e)
+    {
+
     }
   }
 }
