@@ -44,7 +44,7 @@ namespace DatabaseMigration.Forms
       };
 
       txtOracleHost = CreateTextBoxWithLabel("Hôte:", 20, 30, grpOracle);
-      txtOraclePort = CreateTextBoxWithLabel("Port:", 20, 80, grpOracle);
+      txtOraclePort = CreateTextBoxWithLabel("Port: 1521", 20, 80, grpOracle);
       txtOracleService = CreateTextBoxWithLabel("Service:", 20, 130, grpOracle);
       txtOracleUser = CreateTextBoxWithLabel("Utilisateur:", 20, 180, grpOracle);
       txtOraclePassword = CreateTextBoxWithLabel("Mot de passe:", 20, 230, grpOracle);
@@ -113,7 +113,7 @@ namespace DatabaseMigration.Forms
       parent.Controls.AddRange(new Control[] { label, textBox });
       return textBox;
     }
-
+    
     private void LoadConnectionStrings()
     {
       try
@@ -135,9 +135,9 @@ namespace DatabaseMigration.Forms
         txtPgUser.Text = pgBuilder.Username;
         txtPgPassword.Text = pgBuilder.Password;
       }
-      catch (Exception ex)
+      catch (Exception exception)
       {
-        MessageBox.Show($"Erreur lors du chargement des paramètres: {ex.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show($"Erreur lors du chargement des paramètres: {exception.Message}", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
     }
 
