@@ -44,11 +44,12 @@ namespace DatabaseMigration.Forms
       };
 
       txtOracleHost = CreateTextBoxWithLabel("Hôte:", 20, 30, grpOracle);
-      txtOraclePort = CreateTextBoxWithLabel("Port: 1521", 20, 80, grpOracle);
+      txtOraclePort = CreateTextBoxWithLabel("Port: ", 20, 80, grpOracle);
       txtOracleService = CreateTextBoxWithLabel("Service:", 20, 130, grpOracle);
       txtOracleUser = CreateTextBoxWithLabel("Utilisateur:", 20, 180, grpOracle);
       txtOraclePassword = CreateTextBoxWithLabel("Mot de passe:", 20, 230, grpOracle);
       txtOraclePassword.PasswordChar = '*';
+      txtOraclePort.Text = "1521";
 
       var btnTestOracle = new Button
       {
