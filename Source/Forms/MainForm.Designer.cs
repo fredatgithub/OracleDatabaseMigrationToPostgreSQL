@@ -174,6 +174,55 @@ namespace DatabaseMigration
             this.btnSave.Location = new System.Drawing.Point(290, 370);
             this.btnSave.Size = new System.Drawing.Size(150, 35);
 
+            // Configuration des contrôles de l'onglet Tables
+            this.lstOracleTables = new System.Windows.Forms.ListBox();
+            this.lstPgTables = new System.Windows.Forms.ListBox();
+            this.progressMigration = new System.Windows.Forms.ProgressBar();
+            this.btnLoadTables = new System.Windows.Forms.Button();
+            this.btnMigrate = new System.Windows.Forms.Button();
+
+            // Configuration des GroupBox Tables
+            this.grpOracleTables.Text = "Tables Oracle";
+            this.grpOracleTables.Location = new System.Drawing.Point(10, 10);
+            this.grpOracleTables.Size = new System.Drawing.Size(350, 350);
+
+            this.grpPgTables.Text = "Tables PostgreSQL";
+            this.grpPgTables.Location = new System.Drawing.Point(370, 10);
+            this.grpPgTables.Size = new System.Drawing.Size(350, 350);
+
+            // Configuration des ListBox
+            this.lstOracleTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstOracleTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+
+            this.lstPgTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstPgTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+
+            // Configuration des boutons de l'onglet Tables
+            this.btnLoadTables.Text = "Charger les tables";
+            this.btnLoadTables.Location = new System.Drawing.Point(10, 370);
+            this.btnLoadTables.Size = new System.Drawing.Size(150, 35);
+
+            this.btnMigrate.Text = "Migrer les tables";
+            this.btnMigrate.Location = new System.Drawing.Point(570, 370);
+            this.btnMigrate.Size = new System.Drawing.Size(150, 35);
+
+            // Configuration de la barre de progression
+            this.progressMigration.Location = new System.Drawing.Point(10, 420);
+            this.progressMigration.Size = new System.Drawing.Size(710, 30);
+
+            // Ajout des contrôles aux GroupBox Tables
+            this.grpOracleTables.Controls.Add(this.lstOracleTables);
+            this.grpPgTables.Controls.Add(this.lstPgTables);
+
+            // Ajout des contrôles à l'onglet Tables
+            this.tabTables.Controls.AddRange(new System.Windows.Forms.Control[] {
+                this.grpOracleTables,
+                this.grpPgTables,
+                this.btnLoadTables,
+                this.btnMigrate,
+                this.progressMigration
+            });
+
             // Ajout des contrôles aux GroupBox
             this.grpOracle.Controls.AddRange(new System.Windows.Forms.Control[] {
                 this.lblOracleHost, this.txtOracleHost,
