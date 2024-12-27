@@ -50,7 +50,13 @@ namespace DatabaseMigration
       };
       btnTestConnections.Click += BtnTestConnections_Click;
 
-      Controls.Add(btnTestConnections);
+      //Controls.Add(btnTestConnections);
+      // Ajout des contrôles à l'onglet
+      tabConnexion.Controls.Add(btnTestConnections);
+
+      // Ajout de l'onglet au TabControl
+      tabControl.TabPages.Add(tabConnexion);
+
     }
 
     private void BtnTestConnections_Click(object sender, EventArgs e)
