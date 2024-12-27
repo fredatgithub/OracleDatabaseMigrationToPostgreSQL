@@ -171,6 +171,88 @@ namespace DatabaseMigration
                 this.btnSave 
             });
 
+            // Configuration TabPage Tables
+            this.tabTables = new System.Windows.Forms.TabPage();
+            this.grpOracleTables = new System.Windows.Forms.GroupBox();
+            this.grpPgTables = new System.Windows.Forms.GroupBox();
+            this.lstOracleTables = new System.Windows.Forms.ListBox();
+            this.lstPgTables = new System.Windows.Forms.ListBox();
+            this.btnLoadTables = new System.Windows.Forms.Button();
+            this.btnMigrate = new System.Windows.Forms.Button();
+            this.progressMigration = new System.Windows.Forms.ProgressBar();
+
+            this.tabTables.Location = new System.Drawing.Point(4, 22);
+            this.tabTables.Name = "tabTables";
+            this.tabTables.Padding = new System.Windows.Forms.Padding(10);
+            this.tabTables.Size = new System.Drawing.Size(792, 574);
+            this.tabTables.Text = "Tables";
+            this.tabTables.UseVisualStyleBackColor = true;
+            this.tabTables.Font = defaultFont;
+
+            // Configuration GroupBox Oracle Tables
+            this.grpOracleTables.Text = "Tables Oracle";
+            this.grpOracleTables.Location = new System.Drawing.Point(10, 10);
+            this.grpOracleTables.Size = new System.Drawing.Size(350, 400);
+            this.grpOracleTables.Name = "grpOracleTables";
+            this.grpOracleTables.Font = defaultFont;
+
+            // Configuration GroupBox PostgreSQL Tables
+            this.grpPgTables.Text = "Tables PostgreSQL";
+            this.grpPgTables.Location = new System.Drawing.Point(370, 10);
+            this.grpPgTables.Size = new System.Drawing.Size(350, 400);
+            this.grpPgTables.Name = "grpPgTables";
+            this.grpPgTables.Font = defaultFont;
+
+            // Configuration ListBox Oracle
+            this.lstOracleTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstOracleTables.Name = "lstOracleTables";
+            this.lstOracleTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lstOracleTables.Font = defaultFont;
+
+            // Configuration ListBox PostgreSQL
+            this.lstPgTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lstPgTables.Name = "lstPgTables";
+            this.lstPgTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lstPgTables.Font = defaultFont;
+
+            // Configuration du bouton Charger les tables
+            this.btnLoadTables.Location = new System.Drawing.Point(10, 420);
+            this.btnLoadTables.Size = new System.Drawing.Size(200, 35);
+            this.btnLoadTables.Text = "Charger les tables";
+            this.btnLoadTables.Name = "btnLoadTables";
+            this.btnLoadTables.Font = defaultFont;
+            this.btnLoadTables.Click += new System.EventHandler(this.BtnLoadTables_Click);
+
+            // Configuration du bouton Migrer
+            this.btnMigrate.Location = new System.Drawing.Point(520, 420);
+            this.btnMigrate.Size = new System.Drawing.Size(200, 35);
+            this.btnMigrate.Text = "Migrer les tables";
+            this.btnMigrate.Name = "btnMigrate";
+            this.btnMigrate.Font = defaultFont;
+            this.btnMigrate.Click += new System.EventHandler(this.BtnMigrate_Click);
+
+            // Configuration de la barre de progression
+            this.progressMigration.Location = new System.Drawing.Point(10, 470);
+            this.progressMigration.Size = new System.Drawing.Size(710, 30);
+            this.progressMigration.Name = "progressMigration";
+            this.progressMigration.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+
+            // Ajout des contrôles aux groupes
+            this.grpOracleTables.Controls.Add(this.lstOracleTables);
+            this.grpPgTables.Controls.Add(this.lstPgTables);
+
+            // Ajout des contrôles à l'onglet Tables
+            this.tabTables.Controls.AddRange(new System.Windows.Forms.Control[] {
+                this.grpOracleTables,
+                this.grpPgTables,
+                this.btnLoadTables,
+                this.btnMigrate,
+                this.progressMigration
+            });
+
+            // Ajouter l'onglet Tables au TabControl (après l'onglet Connexion)
+            this.tabControl.TabPages.Add(this.tabTables);
+
             // Configuration du formulaire principal
             this.Controls.Add(this.tabControl);
             this.ClientSize = new System.Drawing.Size(900, 650);
@@ -203,5 +285,13 @@ namespace DatabaseMigration
         private System.Windows.Forms.Button btnTestOracle;
         private System.Windows.Forms.Button btnTestPg;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.TabPage tabTables;
+        private System.Windows.Forms.ListBox lstOracleTables;
+        private System.Windows.Forms.ListBox lstPgTables;
+        private System.Windows.Forms.Button btnLoadTables;
+        private System.Windows.Forms.Button btnMigrate;
+        private System.Windows.Forms.GroupBox grpOracleTables;
+        private System.Windows.Forms.GroupBox grpPgTables;
+        private System.Windows.Forms.ProgressBar progressMigration;
     }
 } 

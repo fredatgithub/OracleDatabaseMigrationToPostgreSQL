@@ -184,5 +184,78 @@ namespace DatabaseMigration
                     "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void BtnLoadTables_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                lstOracleTables.Items.Clear();
+                lstPgTables.Items.Clear();
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                // Charger les tables Oracle
+                var oracleTables = dbManager.GetOracleTables();
+                lstOracleTables.Items.AddRange(oracleTables.ToArray());
+
+                // Charger les tables PostgreSQL
+                var pgTables = dbManager.GetPostgresTables();
+                lstPgTables.Items.AddRange(pgTables.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors du chargement des tables : {ex.Message}", 
+                    "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void BtnMigrate_Click(object sender, EventArgs e)
+        {
+            if (lstOracleTables.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Veuillez sélectionner au moins une table à migrer.", 
+                    "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                progressMigration.Minimum = 0;
+                progressMigration.Maximum = lstOracleTables.SelectedItems.Count;
+                progressMigration.Value = 0;
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                foreach (var table in lstOracleTables.SelectedItems)
+                {
+                    var tableName = table.ToString();
+                    var schema = dbManager.ReadOracleData($"SELECT * FROM {tableName} WHERE 1=0");
+                    dbManager.CreatePostgresTable(tableName, schema);
+                    progressMigration.Value++;
+                }
+
+                MessageBox.Show("Migration terminée avec succès!", "Succès", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la migration : {ex.Message}", 
+                    "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
     }
 }
