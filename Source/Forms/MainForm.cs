@@ -12,6 +12,7 @@ namespace DatabaseMigration
 {
     public partial class MainForm : Form
     {
+        private const string WINDOW_SETTINGS_FILE = "window_settings.json";
         private bool isOracleConnectionValid = false;
         private bool isPgConnectionValid = false;
 
@@ -20,8 +21,12 @@ namespace DatabaseMigration
             InitializeComponent();
             LoadConnectionStrings();
             LoadCredentials();
+            LoadWindowSettings();
             ValidateConnections();
             UpdateUIState();
+
+            // Ajouter un gestionnaire pour l'événement FormClosing
+            this.FormClosing += MainForm_FormClosing;
         }
 
         private void LoadConnectionStrings()
@@ -330,6 +335,85 @@ namespace DatabaseMigration
             {
                 Cursor = Cursors.Default;
             }
+        }
+
+        private void LoadWindowSettings()
+        {
+            try
+            {
+                string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+                string settingsPath = Path.Combine(appPath, WINDOW_SETTINGS_FILE);
+
+                if (File.Exists(settingsPath))
+                {
+                    string json = File.ReadAllText(settingsPath);
+                    var settings = JsonSerializer.Deserialize<WindowSettings>(json);
+
+                    // Restaurer la position et la taille
+                    this.Location = new Point(settings.X, settings.Y);
+                    this.Size = new Size(settings.Width, settings.Height);
+
+                    // Vérifier que la fenêtre est visible sur un écran
+                    bool isVisible = false;
+                    foreach (Screen screen in Screen.AllScreens)
+                    {
+                        if (screen.WorkingArea.IntersectsWith(this.Bounds))
+                        {
+                            isVisible = true;
+                            break;
+                        }
+                    }
+
+                    // Si la fenêtre n'est pas visible, la replacer au centre de l'écran principal
+                    if (!isVisible)
+                    {
+                        this.StartPosition = FormStartPosition.CenterScreen;
+                    }
+                }
+            }
+            catch
+            {
+                // En cas d'erreur, utiliser la position par défaut
+                this.StartPosition = FormStartPosition.CenterScreen;
+            }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveWindowSettings();
+        }
+
+        private void SaveWindowSettings()
+        {
+            try
+            {
+                var settings = new WindowSettings
+                {
+                    X = this.Location.X,
+                    Y = this.Location.Y,
+                    Width = this.Size.Width,
+                    Height = this.Size.Height
+                };
+
+                string json = JsonSerializer.Serialize(settings);
+                string appPath = Path.GetDirectoryName(Application.ExecutablePath);
+                string settingsPath = Path.Combine(appPath, WINDOW_SETTINGS_FILE);
+                File.WriteAllText(settingsPath, json);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la sauvegarde des paramètres de fenêtre : {ex.Message}",
+                    "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Classe pour stocker les paramètres de la fenêtre
+        private class WindowSettings
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Width { get; set; }
+            public int Height { get; set; }
         }
     }
 }
