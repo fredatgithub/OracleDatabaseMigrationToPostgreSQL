@@ -1,9 +1,6 @@
+using DatabaseMigration.Forms;
 using System;
 using System.Windows.Forms;
-using Oracle.ManagedDataAccess.Client;
-using Npgsql;
-using System.Configuration;
-using DatabaseMigration.Forms;
 
 namespace DatabaseMigration
 {
@@ -11,7 +8,7 @@ namespace DatabaseMigration
   {
     private TabControl tabControl;
     private TabPage tabConnexion;
-    
+
     public MainForm()
     {
       InitializeComponent();
@@ -20,8 +17,8 @@ namespace DatabaseMigration
 
     private void InitializeComponent()
     {
-      this.Text = "Migration Oracle vers PostgreSQL";
-      this.Size = new System.Drawing.Size(800, 600);
+      Text = "Migration Oracle vers PostgreSQL";
+      Size = new System.Drawing.Size(800, 600);
 
       // Création du TabControl
       tabControl = new TabControl
@@ -29,7 +26,7 @@ namespace DatabaseMigration
         Dock = DockStyle.Fill
       };
 
-      this.Controls.Add(tabControl);
+      Controls.Add(tabControl);
     }
 
     private void SetupTabControl()
@@ -48,15 +45,14 @@ namespace DatabaseMigration
         Location = new System.Drawing.Point(20, 20),
         Size = new System.Drawing.Size(150, 30)
       };
+
       btnTestConnections.Click += BtnTestConnections_Click;
 
-      //Controls.Add(btnTestConnections);
       // Ajout des contrôles à l'onglet
       tabConnexion.Controls.Add(btnTestConnections);
 
       // Ajout de l'onglet au TabControl
       tabControl.TabPages.Add(tabConnexion);
-
     }
 
     private void BtnTestConnections_Click(object sender, EventArgs e)
