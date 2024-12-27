@@ -1,11 +1,13 @@
 namespace DatabaseMigration
 {
-    partial class MainForm
+    public partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
+
+        public System.Drawing.Font defaultFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 
         /// <summary>
         /// Clean up any resources being used.
@@ -27,16 +29,18 @@ namespace DatabaseMigration
 
             textBox.Name = "txt" + labelText.Replace(":", "");
             textBox.Location = new System.Drawing.Point(x + 90, y);
-            textBox.Size = new System.Drawing.Size(150, 20);
+            textBox.Size = new System.Drawing.Size(150, 26);
+            textBox.Font = defaultFont;
             textBox.Parent = parent;
 
             var label = new System.Windows.Forms.Label
             {
                 Text = labelText,
                 Location = new System.Drawing.Point(x, y),
-                Size = new System.Drawing.Size(80, 20),
+                Size = new System.Drawing.Size(85, 26),
                 Name = "lbl" + labelText.Replace(":", ""),
-                Parent = parent
+                Parent = parent,
+                Font = defaultFont
             };
 
             parent.Controls.Add(label);
@@ -90,6 +94,7 @@ namespace DatabaseMigration
             this.tabControl.Size = new System.Drawing.Size(800, 600);
             this.tabControl.TabIndex = 0;
             this.tabControl.TabPages.Add(this.tabConnexion);
+            this.tabControl.Font = defaultFont;
 
             // Configuration TabPage Connexion
             this.tabConnexion.Location = new System.Drawing.Point(4, 22);
@@ -98,18 +103,21 @@ namespace DatabaseMigration
             this.tabConnexion.Size = new System.Drawing.Size(792, 574);
             this.tabConnexion.Text = "Connexion";
             this.tabConnexion.UseVisualStyleBackColor = true;
+            this.tabConnexion.Font = defaultFont;
 
             // Configuration GroupBox Oracle
             this.grpOracle.Text = "Connexion Oracle";
             this.grpOracle.Location = new System.Drawing.Point(10, 10);
-            this.grpOracle.Size = new System.Drawing.Size(280, 300);
+            this.grpOracle.Size = new System.Drawing.Size(350, 350);
             this.grpOracle.Name = "grpOracle";
+            this.grpOracle.Font = defaultFont;
 
             // Configuration GroupBox PostgreSQL
             this.grpPostgres.Text = "Connexion PostgreSQL";
-            this.grpPostgres.Location = new System.Drawing.Point(300, 10);
-            this.grpPostgres.Size = new System.Drawing.Size(280, 300);
+            this.grpPostgres.Location = new System.Drawing.Point(370, 10);
+            this.grpPostgres.Size = new System.Drawing.Size(350, 350);
             this.grpPostgres.Name = "grpPostgres";
+            this.grpPostgres.Font = defaultFont;
 
             // Configuration des contrôles Oracle
             this.txtOracleHost = CreateLabelAndTextBox("Hôte:", this.txtOracleHost, 20, 30, this.grpOracle);
@@ -121,11 +129,12 @@ namespace DatabaseMigration
             this.txtOraclePassword.PasswordChar = '*';
             this.txtOraclePort.Text = "1521";
 
-            this.btnTestOracle.Location = new System.Drawing.Point(90, 260);
-            this.btnTestOracle.Size = new System.Drawing.Size(100, 30);
+            this.btnTestOracle.Location = new System.Drawing.Point(90, 290);
+            this.btnTestOracle.Size = new System.Drawing.Size(150, 35);
             this.btnTestOracle.Text = "Tester Oracle";
             this.btnTestOracle.Name = "btnTestOracle";
             this.btnTestOracle.Click += new System.EventHandler(this.BtnTestOracle_Click);
+            this.btnTestOracle.Font = defaultFont;
 
             // Configuration des contrôles PostgreSQL
             this.txtPgHost = CreateLabelAndTextBox("Hôte:", this.txtPgHost, 20, 30, this.grpPostgres);
@@ -136,18 +145,20 @@ namespace DatabaseMigration
             
             this.txtPgPassword.PasswordChar = '*';
 
-            this.btnTestPg.Location = new System.Drawing.Point(90, 260);
-            this.btnTestPg.Size = new System.Drawing.Size(100, 30);
+            this.btnTestPg.Location = new System.Drawing.Point(90, 290);
+            this.btnTestPg.Size = new System.Drawing.Size(150, 35);
             this.btnTestPg.Text = "Tester PostgreSQL";
             this.btnTestPg.Name = "btnTestPg";
             this.btnTestPg.Click += new System.EventHandler(this.BtnTestPg_Click);
+            this.btnTestPg.Font = defaultFont;
 
             // Configuration du bouton Sauvegarder
-            this.btnSave.Location = new System.Drawing.Point(250, 320);
-            this.btnSave.Size = new System.Drawing.Size(100, 30);
+            this.btnSave.Location = new System.Drawing.Point(290, 370);
+            this.btnSave.Size = new System.Drawing.Size(150, 35);
             this.btnSave.Text = "Sauvegarder";
             this.btnSave.Name = "btnSave";
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnSave.Font = defaultFont;
 
             // Ajout des contrôles aux groupes
             this.grpOracle.Controls.Add(this.btnTestOracle);
@@ -162,7 +173,7 @@ namespace DatabaseMigration
 
             // Configuration du formulaire principal
             this.Controls.Add(this.tabControl);
-            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.ClientSize = new System.Drawing.Size(900, 650);
             this.Name = "MainForm";
             this.Text = "Migration Oracle vers PostgreSQL";
 
