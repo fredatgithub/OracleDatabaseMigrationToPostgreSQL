@@ -40,6 +40,7 @@ namespace DatabaseMigration.Utils
                     }
                 }
             }
+
             return tables;
         }
 
@@ -68,6 +69,7 @@ namespace DatabaseMigration.Utils
                     }
                 }
             }
+
             return tables;
         }
 
