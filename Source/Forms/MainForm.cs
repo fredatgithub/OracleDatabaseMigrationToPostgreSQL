@@ -6,16 +6,22 @@ using System.Configuration;
 using DatabaseMigration.Utils;
 using System.IO;
 using System.Text.Json;
+using System.Drawing;
 
 namespace DatabaseMigration
 {
     public partial class MainForm : Form
     {
+        private bool isOracleConnectionValid = false;
+        private bool isPgConnectionValid = false;
+
         public MainForm()
         {
             InitializeComponent();
             LoadConnectionStrings();
             LoadCredentials();
+            ValidateConnections();
+            UpdateUIState();
         }
 
         private void LoadConnectionStrings()
@@ -46,6 +52,60 @@ namespace DatabaseMigration
             }
         }
 
+        private void ValidateConnections()
+        {
+            try
+            {
+                // Test connexion Oracle
+                using (var conn = new OracleConnection(BuildOracleConnectionString()))
+                {
+                    conn.Open();
+                    isOracleConnectionValid = true;
+                }
+            }
+            catch
+            {
+                isOracleConnectionValid = false;
+            }
+
+            try
+            {
+                // Test connexion PostgreSQL
+                using (var conn = new NpgsqlConnection(BuildPostgresConnectionString()))
+                {
+                    conn.Open();
+                    isPgConnectionValid = true;
+                }
+            }
+            catch
+            {
+                isPgConnectionValid = false;
+            }
+        }
+
+        private void UpdateUIState()
+        {
+            bool areConnectionsValid = isOracleConnectionValid && isPgConnectionValid;
+
+            // Colorer l'onglet Connexion
+            tabConnexion.BackColor = areConnectionsValid ? Color.LightGreen : Color.LightPink;
+
+            // Activer/désactiver l'onglet Tables
+            tabTables.Enabled = areConnectionsValid;
+            
+            // Activer/désactiver les contrôles dans l'onglet Tables
+            grpOracleTables.Enabled = areConnectionsValid;
+            grpPgTables.Enabled = areConnectionsValid;
+            btnLoadTables.Enabled = areConnectionsValid;
+            btnMigrate.Enabled = areConnectionsValid;
+            progressMigration.Enabled = areConnectionsValid;
+
+            // Mettre à jour le texte de l'onglet Connexion pour indiquer le statut
+            tabConnexion.Text = areConnectionsValid ? 
+                "Connexion ✓" : 
+                "Connexion ✗";
+        }
+
         private void BtnTestOracle_Click(object sender, EventArgs e)
         {
             try
@@ -54,14 +114,20 @@ namespace DatabaseMigration
                 using (var conn = new OracleConnection(connStr))
                 {
                     conn.Open();
+                    isOracleConnectionValid = true;
                     MessageBox.Show("Connexion Oracle réussie!", "Succès", 
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
+                isOracleConnectionValid = false;
                 MessageBox.Show($"Erreur de connexion Oracle: {ex.Message}", 
                     "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                UpdateUIState();
             }
         }
 
@@ -73,14 +139,20 @@ namespace DatabaseMigration
                 using (var conn = new NpgsqlConnection(connStr))
                 {
                     conn.Open();
+                    isPgConnectionValid = true;
                     MessageBox.Show("Connexion PostgreSQL réussie!", "Succès", 
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
+                isPgConnectionValid = false;
                 MessageBox.Show($"Erreur de connexion PostgreSQL: {ex.Message}", 
                     "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                UpdateUIState();
             }
         }
 
@@ -90,6 +162,8 @@ namespace DatabaseMigration
             {
                 SaveConnectionStrings();
                 SaveCredentials();
+                ValidateConnections();
+                UpdateUIState();
                 MessageBox.Show("Paramètres sauvegardés avec succès!", "Succès", 
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
