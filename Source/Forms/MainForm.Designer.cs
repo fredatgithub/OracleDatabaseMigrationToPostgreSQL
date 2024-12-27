@@ -66,13 +66,16 @@ namespace DatabaseMigration
             this.lblPgUser = new System.Windows.Forms.Label();
             this.lblPgPassword = new System.Windows.Forms.Label();
             
-            // Création des boutons
+            // Création des boutons et autres contrôles
             this.btnTestOracle = new System.Windows.Forms.Button();
             this.btnTestPg = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnLoadTables = new System.Windows.Forms.Button();
             this.btnMigrate = new System.Windows.Forms.Button();
-            
+            this.progressMigration = new System.Windows.Forms.ProgressBar();
+            this.lstOracleTables = new System.Windows.Forms.ListBox();
+            this.lstPgTables = new System.Windows.Forms.ListBox();
+
             // Configuration des Labels Oracle
             this.lblOracleHost.Text = "Hôte:";
             this.lblOracleHost.Location = new System.Drawing.Point(20, 33);
@@ -175,11 +178,17 @@ namespace DatabaseMigration
             this.btnSave.Size = new System.Drawing.Size(150, 35);
 
             // Configuration des contrôles de l'onglet Tables
-            this.lstOracleTables = new System.Windows.Forms.ListBox();
-            this.lstPgTables = new System.Windows.Forms.ListBox();
-            this.progressMigration = new System.Windows.Forms.ProgressBar();
-            this.btnLoadTables = new System.Windows.Forms.Button();
-            this.btnMigrate = new System.Windows.Forms.Button();
+            this.btnLoadTables.Text = "Charger les tables";
+            this.btnLoadTables.Location = new System.Drawing.Point(10, 370);
+            this.btnLoadTables.Size = new System.Drawing.Size(150, 35);
+
+            this.btnMigrate.Text = "Migrer les tables";
+            this.btnMigrate.Location = new System.Drawing.Point(570, 370);
+            this.btnMigrate.Size = new System.Drawing.Size(150, 35);
+
+            // Configuration de la barre de progression
+            this.progressMigration.Location = new System.Drawing.Point(10, 420);
+            this.progressMigration.Size = new System.Drawing.Size(710, 30);
 
             // Configuration des GroupBox Tables
             this.grpOracleTables.Text = "Tables Oracle";
@@ -196,19 +205,6 @@ namespace DatabaseMigration
 
             this.lstPgTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstPgTables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-
-            // Configuration des boutons de l'onglet Tables
-            this.btnLoadTables.Text = "Charger les tables";
-            this.btnLoadTables.Location = new System.Drawing.Point(10, 370);
-            this.btnLoadTables.Size = new System.Drawing.Size(150, 35);
-
-            this.btnMigrate.Text = "Migrer les tables";
-            this.btnMigrate.Location = new System.Drawing.Point(570, 370);
-            this.btnMigrate.Size = new System.Drawing.Size(150, 35);
-
-            // Configuration de la barre de progression
-            this.progressMigration.Location = new System.Drawing.Point(10, 420);
-            this.progressMigration.Size = new System.Drawing.Size(710, 30);
 
             // Ajout des contrôles aux GroupBox Tables
             this.grpOracleTables.Controls.Add(this.lstOracleTables);
@@ -261,6 +257,13 @@ namespace DatabaseMigration
             this.Controls.Add(this.tabControl);
             this.Name = "MainForm";
             this.Text = "Migration Oracle vers PostgreSQL";
+
+            // Ajout des gestionnaires d'événements
+            this.btnTestOracle.Click += new System.EventHandler(this.BtnTestOracle_Click);
+            this.btnTestPg.Click += new System.EventHandler(this.BtnTestPg_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnLoadTables.Click += new System.EventHandler(this.BtnLoadTables_Click);
+            this.btnMigrate.Click += new System.EventHandler(this.BtnMigrate_Click);
 
             this.ResumeLayout(false);
         }
