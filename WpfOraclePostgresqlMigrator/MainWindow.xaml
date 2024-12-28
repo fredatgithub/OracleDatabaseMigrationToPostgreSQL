@@ -186,5 +186,62 @@
                            Height="30"/>
             </Grid>
         </TabItem>
+
+        <TabItem x:Name="tabUsers" Header="Users">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- GroupBox Users Oracle -->
+                <GroupBox Header="Utilisateurs Oracle" Grid.Column="0">
+                    <ListBox x:Name="lstOracleUsers" SelectionMode="Extended">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Username}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+
+                <!-- GroupBox Users PostgreSQL -->
+                <GroupBox Header="Utilisateurs PostgreSQL" Grid.Column="2">
+                    <ListBox x:Name="lstPgUsers" SelectionMode="Extended">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Username}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+
+                <!-- Boutons -->
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" 
+                          Margin="0,10,0,10">
+                    <Button x:Name="btnLoadUsers" Content="Charger les utilisateurs" 
+                            Width="150" Height="35"/>
+                    <Button x:Name="btnMigrateUsers" Content="Migrer les utilisateurs" 
+                            Width="150" Height="35" HorizontalAlignment="Right" 
+                            Margin="420,0,0,0"/>
+                </StackPanel>
+
+                <!-- Barre de progression -->
+                <ProgressBar x:Name="progressUserMigration" Grid.Row="2" Grid.ColumnSpan="3" 
+                           Height="30"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

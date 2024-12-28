@@ -42,6 +42,10 @@ namespace WpfOraclePostgresqlMigrator
             // Nouveaux gestionnaires pour l'onglet Fonctions
             btnLoadFunctions.Click += BtnLoadFunctions_Click;
             btnMigrateFunctions.Click += BtnMigrateFunctions_Click;
+
+            // Ajouter les gestionnaires pour l'onglet Users
+            btnLoadUsers.Click += BtnLoadUsers_Click;
+            btnMigrateUsers.Click += BtnMigrateUsers_Click;
         }
 
         private void LoadConnectionStrings()
@@ -126,6 +130,7 @@ namespace WpfOraclePostgresqlMigrator
             // Activer/désactiver les onglets
             tabTables.IsEnabled = areConnectionsValid;
             tabFonctions.IsEnabled = areConnectionsValid;
+            tabUsers.IsEnabled = areConnectionsValid;
 
             // Mettre à jour le texte de l'onglet Connexion pour indiquer le statut
             tabConnexion.Header = areConnectionsValid ? 
@@ -514,6 +519,83 @@ namespace WpfOraclePostgresqlMigrator
             catch (Exception ex)
             {
                 MessageBox.Show($"Erreur lors de la migration des fonctions : {ex.Message}", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void BtnLoadUsers_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                lstOracleUsers.Items.Clear();
+                lstPgUsers.Items.Clear();
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                // Charger les utilisateurs Oracle
+                var oracleUsers = dbManager.GetOracleUsers();
+                foreach (var user in oracleUsers)
+                {
+                    lstOracleUsers.Items.Add(user);
+                }
+
+                // Charger les utilisateurs PostgreSQL
+                var pgUsers = dbManager.GetPostgresUsers();
+                foreach (var user in pgUsers)
+                {
+                    lstPgUsers.Items.Add(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors du chargement des utilisateurs : {ex.Message}", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void BtnMigrateUsers_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstOracleUsers.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Veuillez sélectionner au moins un utilisateur à migrer.", 
+                    "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                progressUserMigration.Minimum = 0;
+                progressUserMigration.Maximum = lstOracleUsers.SelectedItems.Count;
+                progressUserMigration.Value = 0;
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                foreach (User user in lstOracleUsers.SelectedItems)
+                {
+                    dbManager.MigrateUser(user);
+                    progressUserMigration.Value++;
+                }
+
+                MessageBox.Show("Migration des utilisateurs terminée avec succès!", "Succès", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la migration des utilisateurs : {ex.Message}", 
                     "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
