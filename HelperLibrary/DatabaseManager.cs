@@ -133,5 +133,118 @@ namespace HelperLibrary
           return "text";
       }
     }
+
+    public List<string> GetOracleFunctions()
+    {
+        var functions = new List<string>();
+        using (var connection = new OracleConnection(_oracleConnectionString))
+        {
+            connection.Open();
+            using (var command = new OracleCommand())
+            {
+                command.Connection = connection;
+                command.CommandText = @"
+                    SELECT object_name 
+                    FROM user_objects 
+                    WHERE object_type = 'FUNCTION'
+                    ORDER BY object_name";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        functions.Add(reader.GetString(0));
+                    }
+                }
+            }
+        }
+        return functions;
+    }
+
+    public List<string> GetPostgresFunctions()
+    {
+        var functions = new List<string>();
+        using (var connection = new NpgsqlConnection(_postgresConnectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand())
+            {
+                command.Connection = connection;
+                command.CommandText = @"
+                    SELECT routines.routine_name
+                    FROM information_schema.routines
+                    WHERE routines.specific_schema NOT IN ('pg_catalog', 'information_schema')
+                    AND type_udt_name != 'trigger'
+                    ORDER BY routines.routine_name";
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        functions.Add(reader.GetString(0));
+                    }
+                }
+            }
+        }
+        return functions;
+    }
+
+    public void MigrateFunction(string functionName)
+    {
+        // Récupérer le code source de la fonction Oracle
+        string oracleSource = GetOracleFunctionSource(functionName);
+        
+        // Convertir le code Oracle en PostgreSQL
+        string pgSource = ConvertOracleToPgFunction(oracleSource);
+        
+        // Créer la fonction dans PostgreSQL
+        using (var connection = new NpgsqlConnection(_postgresConnectionString))
+        {
+            connection.Open();
+            using (var command = new NpgsqlCommand(pgSource, connection))
+            {
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    private string GetOracleFunctionSource(string functionName)
+    {
+        using (var connection = new OracleConnection(_oracleConnectionString))
+        {
+            connection.Open();
+            using (var command = new OracleCommand())
+            {
+                command.Connection = connection;
+                command.CommandText = "SELECT text FROM user_source WHERE name = :name AND type = 'FUNCTION' ORDER BY line";
+                command.Parameters.Add(new OracleParameter("name", functionName.ToUpper()));
+
+                var source = new System.Text.StringBuilder();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        source.Append(reader.GetString(0));
+                    }
+                }
+                return source.ToString();
+            }
+        }
+    }
+
+    private string ConvertOracleToPgFunction(string oracleSource)
+    {
+        // Ici, vous devrez implémenter la logique de conversion
+        // du code PL/SQL Oracle vers PL/pgSQL PostgreSQL
+        // C'est une tâche complexe qui nécessite une analyse approfondie
+        // et la gestion de nombreux cas particuliers
+        
+        // Pour l'instant, retournons simplement le code source avec quelques modifications basiques
+        return oracleSource
+            .Replace("BEGIN", "BEGIN")
+            .Replace("END;", "END;")
+            .Replace("VARCHAR2", "VARCHAR")
+            .Replace("NUMBER", "NUMERIC");
+    }
   }
 }

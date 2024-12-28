@@ -147,5 +147,44 @@
                            Height="30"/>
             </Grid>
         </TabItem>
+
+        <TabItem x:Name="tabFonctions" Header="Fonctions">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- GroupBox Fonctions Oracle -->
+                <GroupBox Header="Fonctions Oracle" Grid.Column="0">
+                    <ListBox x:Name="lstOracleFunctions" SelectionMode="Extended"/>
+                </GroupBox>
+
+                <!-- GroupBox Fonctions PostgreSQL -->
+                <GroupBox Header="Fonctions PostgreSQL" Grid.Column="2">
+                    <ListBox x:Name="lstPgFunctions" SelectionMode="Extended"/>
+                </GroupBox>
+
+                <!-- Boutons -->
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" 
+                          Margin="0,10,0,10">
+                    <Button x:Name="btnLoadFunctions" Content="Charger les fonctions" 
+                            Width="150" Height="35"/>
+                    <Button x:Name="btnMigrateFunctions" Content="Migrer les fonctions" 
+                            Width="150" Height="35" HorizontalAlignment="Right" 
+                            Margin="420,0,0,0"/>
+                </StackPanel>
+
+                <!-- Barre de progression -->
+                <ProgressBar x:Name="progressFunctionMigration" Grid.Row="2" Grid.ColumnSpan="3" 
+                           Height="30"/>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

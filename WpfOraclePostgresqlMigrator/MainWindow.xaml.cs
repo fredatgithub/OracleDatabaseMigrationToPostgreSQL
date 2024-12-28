@@ -38,6 +38,10 @@ namespace WpfOraclePostgresqlMigrator
             btnSave.Click += BtnSave_Click;
             btnLoadTables.Click += BtnLoadTables_Click;
             btnMigrate.Click += BtnMigrate_Click;
+            
+            // Nouveaux gestionnaires pour l'onglet Fonctions
+            btnLoadFunctions.Click += BtnLoadFunctions_Click;
+            btnMigrateFunctions.Click += BtnMigrateFunctions_Click;
         }
 
         private void LoadConnectionStrings()
@@ -119,8 +123,9 @@ namespace WpfOraclePostgresqlMigrator
                 new SolidColorBrush(Colors.LightGreen) : 
                 new SolidColorBrush(Colors.LightPink);
 
-            // Activer/désactiver l'onglet Tables
+            // Activer/désactiver les onglets
             tabTables.IsEnabled = areConnectionsValid;
+            tabFonctions.IsEnabled = areConnectionsValid;
 
             // Mettre à jour le texte de l'onglet Connexion pour indiquer le statut
             tabConnexion.Header = areConnectionsValid ? 
@@ -437,6 +442,84 @@ namespace WpfOraclePostgresqlMigrator
             public double Y { get; set; }
             public double Width { get; set; }
             public double Height { get; set; }
+        }
+
+        private void BtnLoadFunctions_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                lstOracleFunctions.Items.Clear();
+                lstPgFunctions.Items.Clear();
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                // Charger les fonctions Oracle
+                var oracleFunctions = dbManager.GetOracleFunctions();
+                foreach (var function in oracleFunctions)
+                {
+                    lstOracleFunctions.Items.Add(function);
+                }
+
+                // Charger les fonctions PostgreSQL
+                var pgFunctions = dbManager.GetPostgresFunctions();
+                foreach (var function in pgFunctions)
+                {
+                    lstPgFunctions.Items.Add(function);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors du chargement des fonctions : {ex.Message}", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void BtnMigrateFunctions_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstOracleFunctions.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Veuillez sélectionner au moins une fonction à migrer.", 
+                    "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                progressFunctionMigration.Minimum = 0;
+                progressFunctionMigration.Maximum = lstOracleFunctions.SelectedItems.Count;
+                progressFunctionMigration.Value = 0;
+
+                var dbManager = new DatabaseManager(
+                    ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString,
+                    ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString);
+
+                foreach (var function in lstOracleFunctions.SelectedItems)
+                {
+                    var functionName = function.ToString();
+                    dbManager.MigrateFunction(functionName);
+                    progressFunctionMigration.Value++;
+                }
+
+                MessageBox.Show("Migration des fonctions terminée avec succès!", "Succès", 
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la migration des fonctions : {ex.Message}", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
         }
     }
 }
