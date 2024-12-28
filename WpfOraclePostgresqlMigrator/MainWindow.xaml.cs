@@ -44,22 +44,33 @@ namespace WpfOraclePostgresqlMigrator
         {
             try
             {
-                var oracleConnStr = ConfigurationManager.ConnectionStrings["OracleConnection"].ConnectionString;
-                var pgConnStr = ConfigurationManager.ConnectionStrings["PostgresConnection"].ConnectionString;
+                var oracleConnStr = ConfigurationManager.ConnectionStrings["OracleConnection"]?.ConnectionString;
+                var pgConnStr = ConfigurationManager.ConnectionStrings["PostgresConnection"]?.ConnectionString;
 
-                // Parse Oracle connection string
-                var oracleBuilder = new OracleConnectionStringBuilder(oracleConnStr);
-                txtOracleHost.Text = oracleBuilder.DataSource;
-                txtOracleUser.Text = oracleBuilder.UserID;
-                txtOraclePassword.Password = oracleBuilder.Password;
+                if (!string.IsNullOrEmpty(oracleConnStr))
+                {
+                    // Parse Oracle connection string
+                    var oracleBuilder = new OracleConnectionStringBuilder(oracleConnStr);
+                    txtOracleHost.Text = oracleBuilder.DataSource;
+                    // Ne pas écraser le port par défaut si aucune valeur n'est définie
+                    if (!string.IsNullOrEmpty(oracleBuilder.DataSource))
+                    {
+                        txtOraclePort.Text = "1521"; // Garder la valeur par défaut
+                    }
+                    txtOracleUser.Text = oracleBuilder.UserID;
+                    txtOraclePassword.Password = oracleBuilder.Password;
+                }
 
-                // Parse Postgres connection string
-                var pgBuilder = new NpgsqlConnectionStringBuilder(pgConnStr);
-                txtPgHost.Text = pgBuilder.Host;
-                txtPgPort.Text = pgBuilder.Port.ToString();
-                txtPgDatabase.Text = pgBuilder.Database;
-                txtPgUser.Text = pgBuilder.Username;
-                txtPgPassword.Password = pgBuilder.Password;
+                if (!string.IsNullOrEmpty(pgConnStr))
+                {
+                    // Parse Postgres connection string
+                    var pgBuilder = new NpgsqlConnectionStringBuilder(pgConnStr);
+                    txtPgHost.Text = pgBuilder.Host;
+                    txtPgPort.Text = pgBuilder.Port.ToString();
+                    txtPgDatabase.Text = pgBuilder.Database;
+                    txtPgUser.Text = pgBuilder.Username;
+                    txtPgPassword.Password = pgBuilder.Password;
+                }
             }
             catch (Exception ex)
             {
