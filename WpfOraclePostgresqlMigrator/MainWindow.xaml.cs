@@ -113,8 +113,8 @@ namespace WpfOraclePostgresqlMigrator
 
             // Mettre à jour le texte de l'onglet Connexion pour indiquer le statut
             tabConnexion.Header = areConnectionsValid ? 
-                "Connexion ✓" : 
-                "Connexion ✗";
+                "Connexion OK" : 
+                "Connexion KO";
         }
 
         private void BtnTestOracle_Click(object sender, RoutedEventArgs e)
