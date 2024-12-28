@@ -1,12 +1,151 @@
 ﻿<Window x:Class="WpfOraclePostgresqlMigrator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfOraclePostgresqlMigrator"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Migration Oracle vers PostgreSQL" Height="650" Width="900"
+        WindowStartupLocation="CenterScreen">
+    
+    <TabControl x:Name="tabControl">
+        <TabItem x:Name="tabConnexion" Header="Connexion">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- GroupBox Oracle -->
+                <GroupBox Header="Connexion Oracle" Grid.Column="0">
+                    <StackPanel Margin="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Hôte:" Grid.Row="0"/>
+                            <TextBox x:Name="txtOracleHost" Grid.Row="0" Grid.Column="1"/>
+
+                            <Label Content="Port:" Grid.Row="2"/>
+                            <TextBox x:Name="txtOraclePort" Grid.Row="2" Grid.Column="1"/>
+
+                            <Label Content="Service:" Grid.Row="4"/>
+                            <TextBox x:Name="txtOracleService" Grid.Row="4" Grid.Column="1"/>
+
+                            <Label Content="Utilisateur:" Grid.Row="6"/>
+                            <TextBox x:Name="txtOracleUser" Grid.Row="6" Grid.Column="1"/>
+
+                            <Label Content="Mot de passe:" Grid.Row="8"/>
+                            <PasswordBox x:Name="txtOraclePassword" Grid.Row="8" Grid.Column="1"/>
+
+                            <Button x:Name="btnTestOracle" Content="Tester Oracle" 
+                                    Grid.Row="10" Grid.Column="1" Height="35"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- GroupBox PostgreSQL -->
+                <GroupBox Header="Connexion PostgreSQL" Grid.Column="2">
+                    <StackPanel Margin="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Hôte:" Grid.Row="0"/>
+                            <TextBox x:Name="txtPgHost" Grid.Row="0" Grid.Column="1"/>
+
+                            <Label Content="Port:" Grid.Row="2"/>
+                            <TextBox x:Name="txtPgPort" Grid.Row="2" Grid.Column="1"/>
+
+                            <Label Content="Base:" Grid.Row="4"/>
+                            <TextBox x:Name="txtPgDatabase" Grid.Row="4" Grid.Column="1"/>
+
+                            <Label Content="Utilisateur:" Grid.Row="6"/>
+                            <TextBox x:Name="txtPgUser" Grid.Row="6" Grid.Column="1"/>
+
+                            <Label Content="Mot de passe:" Grid.Row="8"/>
+                            <PasswordBox x:Name="txtPgPassword" Grid.Row="8" Grid.Column="1"/>
+
+                            <Button x:Name="btnTestPg" Content="Tester PostgreSQL" 
+                                    Grid.Row="10" Grid.Column="1" Height="35"/>
+                        </Grid>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Bouton Sauvegarder -->
+                <Button x:Name="btnSave" Content="Sauvegarder" Grid.Row="1" Grid.Column="2"
+                        Height="35" Width="150" Margin="0,10,0,0" HorizontalAlignment="Right"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem x:Name="tabTables" Header="Tables">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- GroupBox Tables Oracle -->
+                <GroupBox Header="Tables Oracle" Grid.Column="0">
+                    <ListBox x:Name="lstOracleTables" SelectionMode="Extended"/>
+                </GroupBox>
+
+                <!-- GroupBox Tables PostgreSQL -->
+                <GroupBox Header="Tables PostgreSQL" Grid.Column="2">
+                    <ListBox x:Name="lstPgTables" SelectionMode="Extended"/>
+                </GroupBox>
+
+                <!-- Boutons -->
+                <StackPanel Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" 
+                          Margin="0,10,0,10">
+                    <Button x:Name="btnLoadTables" Content="Charger les tables" 
+                            Width="150" Height="35"/>
+                    <Button x:Name="btnMigrate" Content="Migrer les tables" 
+                            Width="150" Height="35" HorizontalAlignment="Right" 
+                            Margin="420,0,0,0"/>
+                </StackPanel>
+
+                <!-- Barre de progression -->
+                <ProgressBar x:Name="progressMigration" Grid.Row="2" Grid.ColumnSpan="3" 
+                           Height="30"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
