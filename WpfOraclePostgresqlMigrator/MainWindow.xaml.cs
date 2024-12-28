@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Drawing;
 using Forms = System.Windows.Forms;
 using HelperLibrary;
+using static HelperLibrary.DatabaseManager;
 
 namespace WpfOraclePostgresqlMigrator
 {
