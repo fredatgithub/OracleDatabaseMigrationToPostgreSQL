@@ -45,7 +45,7 @@
                             <Label Content="Port:" Grid.Row="2"/>
                             <TextBox x:Name="txtOraclePort" Grid.Row="2" Grid.Column="1" Text="1521"/>
 
-                            <Label Content="Service:" Grid.Row="4"/>
+                            <Label Content="Base:" Grid.Row="4"/>
                             <TextBox x:Name="txtOracleService" Grid.Row="4" Grid.Column="1"/>
 
                             <Label Content="Utilisateur:" Grid.Row="6"/>
