@@ -12,5 +12,5 @@ This project started in 2024 and is still in development.
 
 This project started as a Winform application but was converted to a WPF application.
 
-[Migration_Oracle_To_PostgreSQL.png](Migration_Oracle_To_PostgreSQL.png)
+![Migration_Oracle_To_PostgreSQL.png](Migration_Oracle_To_PostgreSQL.png)
 
