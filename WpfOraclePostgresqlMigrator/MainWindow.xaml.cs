@@ -251,7 +251,7 @@ namespace WpfOraclePostgresqlMigrator
       };
 
       string json = JsonSerializer.Serialize(credentials);
-      string encrypted = HelperLibrary.SecurityHelper.Encrypt(json);
+      string encrypted = SecurityHelper.Encrypt(json);
       string appPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
       string credentialsPath = Path.Combine(appPath, "id.txt");
       File.WriteAllText(credentialsPath, encrypted);
@@ -267,7 +267,7 @@ namespace WpfOraclePostgresqlMigrator
         if (File.Exists(credentialsPath))
         {
           string encrypted = File.ReadAllText(credentialsPath);
-          string json = HelperLibrary.SecurityHelper.Decrypt(encrypted);
+          string json = SecurityHelper.Decrypt(encrypted);
           var credentials = JsonSerializer.Deserialize<dynamic>(json);
 
           // Oracle
