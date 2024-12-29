@@ -19,7 +19,7 @@ namespace HelperLibrary
     public List<string> GetOracleTables()
     {
       var tables = new List<string>();
-      using (var connection = new OracleConnection(_oracleConnectionString))
+      using (var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_oracleConnectionString))
       {
         connection.Open();
         using (var command = new OracleCommand())
@@ -74,7 +74,7 @@ namespace HelperLibrary
 
     public DataTable ReadOracleData(string query)
     {
-      using (var connection = new OracleConnection(_oracleConnectionString))
+      using (var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_oracleConnectionString))
       {
         connection.Open();
         using (var command = new OracleCommand(query, connection))
@@ -138,7 +138,7 @@ namespace HelperLibrary
     public List<string> GetOracleFunctions()
     {
         var functions = new List<string>();
-        using (var connection = new OracleConnection(_oracleConnectionString))
+        using (var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_oracleConnectionString))
         {
             connection.Open();
             using (var command = new OracleCommand())
@@ -211,7 +211,7 @@ namespace HelperLibrary
 
     private string GetOracleFunctionSource(string functionName)
     {
-        using (var connection = new OracleConnection(_oracleConnectionString))
+        using (var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_oracleConnectionString))
         {
             connection.Open();
             using (var command = new OracleCommand())
@@ -263,7 +263,7 @@ namespace HelperLibrary
     public List<User> GetOracleUsers()
     {
         var users = new List<User>();
-        using (var connection = new OracleConnection(_oracleConnectionString))
+        using (var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(_oracleConnectionString))
         {
             connection.Open();
             using (var command = new OracleCommand())

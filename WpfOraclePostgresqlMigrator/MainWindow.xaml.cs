@@ -59,7 +59,7 @@ namespace WpfOraclePostgresqlMigrator
         if (!string.IsNullOrEmpty(oracleConnStr))
         {
           // Parse Oracle connection string
-          var oracleBuilder = new OracleConnectionStringBuilder(oracleConnStr);
+          var oracleBuilder = new Oracle.ManagedDataAccess.Client.OracleConnectionStringBuilder(oracleConnStr);
           txtOracleHost.Text = oracleBuilder.DataSource;
           // Ne pas écraser le port par défaut si aucune valeur n'est définie
           if (!string.IsNullOrEmpty(oracleBuilder.DataSource))
@@ -88,12 +88,14 @@ namespace WpfOraclePostgresqlMigrator
       }
     }
 
+    // Remplacer toutes les instances de OracleConnection par Oracle.ManagedDataAccess.Client.OracleConnection
+
     private void ValidateConnections()
     {
       try
       {
         // Test connexion Oracle
-        using (var conn = new OracleConnection(BuildOracleConnectionString()))
+        using (var conn = new Oracle.ManagedDataAccess.Client.OracleConnection(BuildOracleConnectionString()))
         {
           conn.Open();
           isOracleConnectionValid = true;
@@ -144,7 +146,7 @@ namespace WpfOraclePostgresqlMigrator
       try
       {
         var connStr = BuildOracleConnectionString();
-        using (var conn = new OracleConnection(connStr))
+        using (var conn = new Oracle.ManagedDataAccess.Client.OracleConnection(connStr))
         {
           conn.Open();
           isOracleConnectionValid = true;
